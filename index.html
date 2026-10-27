@@ -12,13 +12,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #e15800;
-            color: #1a1a1a;
+            background: linear-gradient(135deg, #2b0308 0%, #4a0913 50%, #150205 100%);
+            color: #f3e8ee;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(40, 10, 18, 0.55);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(225, 29, 72, 0.25);
         }
         .heart-beat {
             animation: pulse 1.5s infinite;
@@ -30,107 +30,137 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-yellow-400 selection:text-black">
+<body class="min-h-screen flex flex-col justify-between selection:bg-rose-700 selection:text-white">
 
-    <header class="w-full py-12 px-4 text-center relative overflow-hidden">
+    <header class="w-full py-10 px-4 text-center relative overflow-hidden">
         <div class="max-w-4xl mx-auto relative z-10">
-            <div class="inline-block p-3 rounded-full bg-black/10 text-black mb-4 heart-beat">
+            <div class="inline-block p-3.5 rounded-full bg-rose-950/60 border border-rose-500/30 text-rose-400 mb-3 heart-beat shadow-lg">
                 <i class="fas fa-heart text-3xl"></i>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-black" id="couple-names">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-rose-100 flex items-center justify-center gap-3" id="couple-names">
                 João & Mari
             </h1>
-            <p class="text-black/80 font-medium text-sm md:text-base">Filmes para ver juntos</p>
+            <p class="text-rose-300/80 font-medium text-sm md:text-base flex items-center justify-center gap-2">
+                <i class="fas fa-film text-xs text-rose-400"></i>
+                <span>Nossa Sessão de Cinema</span>
+                <i class="fas fa-video text-xs text-rose-400"></i>
+            </p>
             
             <!-- Relationship Counter Card -->
             <div class="mt-8 glass-card rounded-2xl p-6 max-w-2xl mx-auto shadow-2xl">
-                <h3 class="text-xs uppercase tracking-wider text-black font-bold mb-4">Tempo Juntos</h3>
+                <h3 class="text-xs uppercase tracking-wider text-rose-300 font-bold mb-4 flex items-center justify-center gap-2">
+                    <i class="fas fa-clock text-rose-400"></i> Tempo Juntos
+                </h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div class="bg-black/20 p-3 rounded-xl border border-black/10">
-                        <span id="days" class="text-2xl md:text-3xl font-bold text-black block">0</span>
-                        <span class="text-xs text-black/80 font-medium">Dias</span>
+                    <div class="bg-black/40 p-3 rounded-xl border border-rose-900/50">
+                        <span id="days" class="text-2xl md:text-3xl font-bold text-rose-100 block">0</span>
+                        <span class="text-xs text-rose-300/80 font-medium">Dias</span>
                     </div>
-                    <div class="bg-black/20 p-3 rounded-xl border border-black/10">
-                        <span id="hours" class="text-2xl md:text-3xl font-bold text-black block">0</span>
-                        <span class="text-xs text-black/80 font-medium">Horas</span>
+                    <div class="bg-black/40 p-3 rounded-xl border border-rose-900/50">
+                        <span id="hours" class="text-2xl md:text-3xl font-bold text-rose-100 block">0</span>
+                        <span class="text-xs text-rose-300/80 font-medium">Horas</span>
                     </div>
-                    <div class="bg-black/20 p-3 rounded-xl border border-black/10">
-                        <span id="minutes" class="text-2xl md:text-3xl font-bold text-black block">0</span>
-                        <span class="text-xs text-black/80 font-medium">Minutos</span>
+                    <div class="bg-black/40 p-3 rounded-xl border border-rose-900/50">
+                        <span id="minutes" class="text-2xl md:text-3xl font-bold text-rose-100 block">0</span>
+                        <span class="text-xs text-rose-300/80 font-medium">Minutos</span>
                     </div>
-                    <div class="bg-black/20 p-3 rounded-xl border border-black/10">
-                        <span id="seconds" class="text-2xl md:text-3xl font-bold text-black block">0</span>
-                        <span class="text-xs text-black/80 font-medium">Segundos</span>
+                    <div class="bg-black/40 p-3 rounded-xl border border-rose-900/50">
+                        <span id="seconds" class="text-2xl md:text-3xl font-bold text-rose-100 block">0</span>
+                        <span class="text-xs text-rose-300/80 font-medium">Segundos</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-grow">
+    <main class="max-w-4xl w-full mx-auto px-4 py-6 flex-grow">
         
         <!-- Navigation Buttons -->
-        <div class="flex flex-wrap justify-center gap-4 mb-8">
-            <button onclick="switchTab('movies')" id="btn-movies" class="px-6 py-2.5 rounded-xl font-bold transition-all bg-yellow-400 text-black shadow-lg hover:bg-yellow-300 border-2 border-black">
-                <i class="fas fa-film mr-2"></i> Nossa Lista de Filmes
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <button onclick="switchTab('to-watch')" id="btn-to-watch" class="px-5 py-2.5 rounded-xl font-bold transition-all bg-rose-700 text-white shadow-lg hover:bg-rose-600 border border-rose-500/40 flex items-center gap-2">
+                <i class="fas fa-popcorn"></i> Para Assistir
             </button>
-            <button onclick="openRandomizer()" class="px-6 py-2.5 rounded-xl font-bold transition-all bg-black text-yellow-400 shadow-lg hover:bg-gray-900 border-2 border-yellow-400 flex items-center">
-                <i class="fas fa-dice mr-2"></i> Sortear Filme 🎲
+            <button onclick="switchTab('watched')" id="btn-watched" class="px-5 py-2.5 rounded-xl font-bold transition-all bg-black/40 text-rose-200 hover:bg-rose-950/60 border border-rose-900/60 flex items-center gap-2">
+                <i class="fas fa-check-circle text-rose-400"></i> Já Assistidos
             </button>
-            <button onclick="switchTab('settings')" id="btn-settings" class="px-6 py-2.5 rounded-xl font-bold transition-all bg-black text-white hover:bg-gray-900 border-2 border-black">
-                <i class="fas fa-cog mr-2"></i> Configurar Datas
+            <button onclick="openRandomizer()" class="px-5 py-2.5 rounded-xl font-bold transition-all bg-amber-600/30 text-amber-200 hover:bg-amber-600/40 border border-amber-500/40 flex items-center gap-2 shadow-lg">
+                <i class="fas fa-dice text-amber-400"></i> Sortear
+            </button>
+            <button onclick="switchTab('settings')" id="btn-settings" class="px-5 py-2.5 rounded-xl font-bold transition-all bg-black/40 text-rose-200 hover:bg-rose-950/60 border border-rose-900/60 flex items-center gap-2">
+                <i class="fas fa-cog"></i> Configurar
             </button>
         </div>
 
-        <!-- Section: Movies -->
-        <div id="section-movies" class="space-y-6">
+        <!-- Section: Add Movie Form -->
+        <div id="section-form" class="mb-6">
             <div class="glass-card rounded-2xl p-6 shadow-xl">
-                <h2 class="text-xl font-bold mb-4 text-black flex items-center justify-between">
-                    <span>Adicionar Filme ou Série</span>
-                    <i class="fas fa-video text-black"></i>
+                <h2 class="text-xl font-bold mb-4 text-rose-100 flex items-center justify-between">
+                    <span class="flex items-center gap-2"><i class="fas fa-plus-circle text-rose-400"></i> Adicionar Filme ou Série</span>
+                    <i class="fas fa-clapperboard text-rose-400"></i>
                 </h2>
                 <form id="movie-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <input type="text" id="movie-title" placeholder="Nome do Filme/Série" required 
-                        class="bg-white/90 border-2 border-black rounded-xl px-4 py-2.5 text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                    <select id="movie-category" class="bg-white/90 border-2 border-black rounded-xl px-4 py-2.5 text-black focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        <option value="Vamos Assistir">Vamos Assistir</option>
-                        <option value="Já Assistimos">Já Assistimos ❤️</option>
+                        class="bg-black/50 border border-rose-800/80 rounded-xl px-4 py-2.5 text-rose-100 placeholder-rose-400/50 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500">
+                    <select id="movie-category" class="bg-black/50 border border-rose-800/80 rounded-xl px-4 py-2.5 text-rose-100 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500">
+                        <option value="Vamos Assistir" class="bg-rose-950 text-rose-100">Para Assistir</option>
+                        <option value="Já Assistimos" class="bg-rose-950 text-rose-100">Já Assistimos</option>
                     </select>
-                    <button type="submit" class="bg-yellow-400 hover:bg-yellow-300 text-black font-bold rounded-xl px-6 py-2.5 transition-all shadow-md border-2 border-black">
-                        Adicionar
+                    <button type="submit" class="bg-rose-700 hover:bg-rose-600 text-white font-bold rounded-xl px-6 py-2.5 transition-all shadow-md border border-rose-500/40 flex items-center justify-center gap-2">
+                        <i class="fas fa-plus"></i> Adicionar
                     </button>
                 </form>
             </div>
+        </div>
 
-            <!-- Movies List Grid -->
+        <!-- Section: Movies To Watch Tab -->
+        <div id="section-to-watch" class="space-y-6">
             <div class="glass-card rounded-2xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-black">Lista de Filmes</h2>
-                    <span id="movie-count" class="text-xs bg-black text-yellow-400 font-bold px-3 py-1 rounded-full border border-yellow-400">0 itens</span>
+                <div class="flex items-center justify-between mb-6 border-b border-rose-900/50 pb-4">
+                    <h2 class="text-xl font-bold text-rose-100 flex items-center gap-2">
+                        <i class="fas fa-film text-rose-400"></i> Filmes Para Assistir
+                    </h2>
+                    <span id="to-watch-count" class="text-xs bg-rose-950/80 text-rose-300 font-bold px-3 py-1 rounded-full border border-rose-800">0 itens</span>
                 </div>
-                <div id="movies-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="to-watch-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Dynamic Items -->
                 </div>
             </div>
         </div>
 
-        <!-- Section: Settings -->
+        <!-- Section: Watched Movies Tab -->
+        <div id="section-watched" class="hidden space-y-6">
+            <div class="glass-card rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between mb-6 border-b border-rose-900/50 pb-4">
+                    <h2 class="text-xl font-bold text-rose-100 flex items-center gap-2">
+                        <i class="fas fa-heart text-rose-400"></i> Filmes Já Assistidos
+                    </h2>
+                    <span id="watched-count" class="text-xs bg-rose-950/80 text-rose-300 font-bold px-3 py-1 rounded-full border border-rose-800">0 itens</span>
+                </div>
+                <div id="watched-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic Items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Settings Tab -->
         <div id="section-settings" class="hidden space-y-6">
             <div class="glass-card rounded-2xl p-6 shadow-xl max-w-xl mx-auto">
-                <h2 class="text-xl font-bold mb-4 text-black">Personalizar Dados do Casal</h2>
+                <h2 class="text-xl font-bold mb-4 text-rose-100 flex items-center gap-2">
+                    <i class="fas fa-sliders text-rose-400"></i> Personalizar Dados do Casal
+                </h2>
                 <form id="settings-form" class="space-y-4">
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-black font-bold mb-2">Nomes do Casal</label>
+                        <label class="block text-xs uppercase tracking-wider text-rose-300 font-bold mb-2">Nomes do Casal</label>
                         <input type="text" id="input-names" value="João & Mari" required
-                            class="w-full bg-white/90 border-2 border-black rounded-xl px-4 py-2.5 text-black focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                            class="w-full bg-black/50 border border-rose-800/80 rounded-xl px-4 py-2.5 text-rose-100 focus:outline-none focus:border-rose-500">
                     </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-black font-bold mb-2">Data e Hora de Início</label>
+                        <label class="block text-xs uppercase tracking-wider text-rose-300 font-bold mb-2">Data e Hora de Início</label>
                         <input type="datetime-local" id="input-date" required
-                            class="w-full bg-white/90 border-2 border-black rounded-xl px-4 py-2.5 text-black focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                            class="w-full bg-black/50 border border-rose-800/80 rounded-xl px-4 py-2.5 text-rose-100 focus:outline-none focus:border-rose-500">
                     </div>
-                    <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold rounded-xl py-3 transition-all shadow-md border-2 border-black">
-                        Salvar Alterações
+                    <button type="submit" class="w-full bg-rose-700 hover:bg-rose-600 text-white font-bold rounded-xl py-3 transition-all shadow-md border border-rose-500/40 flex items-center justify-center gap-2">
+                        <i class="fas fa-save"></i> Salvar Alterações
                     </button>
                 </form>
             </div>
@@ -139,26 +169,33 @@
     </main>
 
     <!-- Randomizer Modal -->
-    <div id="randomizer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-[#e15800] border-4 border-black rounded-3xl p-8 max-w-md w-full text-center shadow-2xl relative">
-            <button onclick="closeRandomizer()" class="absolute top-4 right-4 text-black hover:text-white font-bold text-xl bg-yellow-400 w-8 h-8 rounded-full border-2 border-black flex items-center justify-center">
-                &times;
+    <div id="randomizer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-gradient-to-b from-rose-950 to-black border border-rose-700/60 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl relative">
+            <button onclick="closeRandomizer()" class="absolute top-4 right-4 text-rose-300 hover:text-white font-bold text-xl bg-rose-900/50 w-8 h-8 rounded-full border border-rose-700 flex items-center justify-center transition-colors">
+                <i class="fas fa-times text-sm"></i>
             </button>
-            <div class="text-4xl mb-3">🎲🎬</div>
-            <h3 class="text-2xl font-bold text-black mb-2">Sorteio de Filme</h3>
-            <p class="text-black/80 text-sm mb-6">Filme escolhido da lista "Vamos Assistir":</p>
-            <div id="randomizer-result" class="bg-black/20 border-2 border-black rounded-2xl p-6 text-2xl font-bold text-black mb-6 min-h-[100px] flex items-center justify-center">
-                Clique no botão abaixo para sortear!
+            <div class="text-4xl mb-3 text-rose-400 flex justify-center gap-3">
+                <i class="fas fa-dice"></i>
+                <i class="fas fa-film"></i>
             </div>
-            <button onclick="pickRandomMovie()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold rounded-xl py-3.5 transition-all shadow-md border-2 border-black text-lg">
-                Sortear Agora 🎲
+            <h3 class="text-2xl font-bold text-rose-100 mb-2">Sorteio de Filme</h3>
+            <p class="text-rose-300/80 text-sm mb-6">Escolha aleatória da sua lista "Para Assistir":</p>
+            <div id="randomizer-result" class="bg-black/60 border border-rose-800/80 rounded-2xl p-6 text-xl font-bold text-rose-100 mb-6 min-h-[100px] flex items-center justify-center">
+                Clique no botão para sortear!
+            </div>
+            <button onclick="pickRandomMovie()" class="w-full bg-rose-700 hover:bg-rose-600 text-white font-bold rounded-xl py-3.5 transition-all shadow-md border border-rose-500/40 text-lg flex items-center justify-center gap-2">
+                <i class="fas fa-random"></i> Sortear Agora
             </button>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="text-center py-6 text-xs text-black font-bold border-t border-black/20 mt-12">
-        Mari + João = ☀️ 
+    <footer class="text-center py-6 text-xs text-rose-400/80 font-medium border-t border-rose-950/80 mt-12 flex items-center justify-center gap-2">
+        <span>Mari</span>
+        <i class="fas fa-heart text-rose-600"></i>
+        <span>João</span>
+        <span class="mx-1">•</span>
+        <i class="fas fa-ticket text-rose-500"></i>
     </footer>
 
     <script>
@@ -195,23 +232,42 @@
         setInterval(updateCounter, 1000);
         updateCounter();
 
-        // Tabs Switching
+        // Tabs Switching Logic
         function switchTab(tab) {
-            const btnMovies = document.getElementById('btn-movies');
+            const btnToWatch = document.getElementById('btn-to-watch');
+            const btnWatched = document.getElementById('btn-watched');
             const btnSettings = document.getElementById('btn-settings');
-            const secMovies = document.getElementById('section-movies');
+            
+            const secForm = document.getElementById('section-form');
+            const secToWatch = document.getElementById('section-to-watch');
+            const secWatched = document.getElementById('section-watched');
             const secSettings = document.getElementById('section-settings');
 
-            if (tab === 'movies') {
-                btnMovies.className = "px-6 py-2.5 rounded-xl font-bold transition-all bg-yellow-400 text-black shadow-lg hover:bg-yellow-300 border-2 border-black";
-                btnSettings.className = "px-6 py-2.5 rounded-xl font-bold transition-all bg-black text-white hover:bg-gray-900 border-2 border-black";
-                secMovies.classList.remove('hidden');
-                secSettings.classList.add('hidden');
-            } else {
-                btnSettings.className = "px-6 py-2.5 rounded-xl font-bold transition-all bg-yellow-400 text-black shadow-lg hover:bg-yellow-300 border-2 border-black";
-                btnMovies.className = "px-6 py-2.5 rounded-xl font-bold transition-all bg-black text-white hover:bg-gray-900 border-2 border-black";
+            const activeBtnClass = "px-5 py-2.5 rounded-xl font-bold transition-all bg-rose-700 text-white shadow-lg hover:bg-rose-600 border border-rose-500/40 flex items-center gap-2";
+            const inactiveBtnClass = "px-5 py-2.5 rounded-xl font-bold transition-all bg-black/40 text-rose-200 hover:bg-rose-950/60 border border-rose-900/60 flex items-center gap-2";
+
+            // Reset tab styles
+            btnToWatch.className = inactiveBtnClass;
+            btnWatched.className = inactiveBtnClass;
+            btnSettings.className = inactiveBtnClass;
+
+            // Hide all sections
+            secToWatch.classList.add('hidden');
+            secWatched.classList.add('hidden');
+            secSettings.classList.add('hidden');
+
+            if (tab === 'to-watch') {
+                btnToWatch.className = activeBtnClass;
+                secForm.classList.remove('hidden');
+                secToWatch.classList.remove('hidden');
+            } else if (tab === 'watched') {
+                btnWatched.className = activeBtnClass;
+                secForm.classList.remove('hidden');
+                secWatched.classList.remove('hidden');
+            } else if (tab === 'settings') {
+                btnSettings.className = activeBtnClass;
+                secForm.classList.add('hidden');
                 secSettings.classList.remove('hidden');
-                secMovies.classList.add('hidden');
             }
         }
 
@@ -232,11 +288,10 @@
             const resultBox = document.getElementById('randomizer-result');
 
             if (watchList.length === 0) {
-                resultBox.innerText = "Nenhum filme na lista 'Vamos Assistir'!";
+                resultBox.innerText = "Nenhum filme na lista 'Para Assistir'!";
                 return;
             }
 
-            // Animation effect
             resultBox.innerText = "Sorteando...";
             let counter = 0;
             const interval = setInterval(() => {
@@ -246,40 +301,85 @@
                 if (counter > 10) {
                     clearInterval(interval);
                     const finalChoice = watchList[Math.floor(Math.random() * watchList.length)];
-                    resultBox.innerText = `🎬 ${finalChoice.title}`;
+                    resultBox.innerHTML = `<span class="text-rose-300 font-bold flex items-center gap-2"><i class="fas fa-star text-amber-400"></i> ${escapeHtml(finalChoice.title)}</span>`;
                 }
             }, 80);
         }
 
-        // Render Movies
-        function renderMovies() {
-            const container = document.getElementById('movies-container');
-            const countBadge = document.getElementById('movie-count');
-            container.innerHTML = '';
-            countBadge.innerText = `${appData.movies.length} itens`;
+        // Move Movie between lists
+        function toggleMovieCategory(id) {
+            const movie = appData.movies.find(m => m.id === id);
+            if (movie) {
+                movie.category = movie.category === "Vamos Assistir" ? "Já Assistimos" : "Vamos Assistir";
+                saveAndRefresh();
+            }
+        }
 
-            if (appData.movies.length === 0) {
-                container.innerHTML = `<p class="text-black/80 font-medium text-center col-span-2 py-4">Nenhum filme adicionado ainda.</p>`;
-                return;
+        // Render Movies separated by tabs
+        function renderMovies() {
+            const toWatchContainer = document.getElementById('to-watch-container');
+            const watchedContainer = document.getElementById('watched-container');
+            const toWatchBadge = document.getElementById('to-watch-count');
+            const watchedBadge = document.getElementById('watched-count');
+
+            toWatchContainer.innerHTML = '';
+            watchedContainer.innerHTML = '';
+
+            const toWatchList = appData.movies.filter(m => m.category === "Vamos Assistir");
+            const watchedList = appData.movies.filter(m => m.category === "Já Assistimos");
+
+            toWatchBadge.innerText = `${toWatchList.length} itens`;
+            watchedBadge.innerText = `${watchedList.length} itens`;
+
+            // Render To-Watch List
+            if (toWatchList.length === 0) {
+                toWatchContainer.innerHTML = `<p class="text-rose-300/60 font-medium text-center col-span-2 py-6">Nenhum filme na lista para assistir.</p>`;
+            } else {
+                toWatchList.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.className = "bg-black/40 border border-rose-900/60 p-4 rounded-xl flex items-center justify-between shadow-md hover:border-rose-700/60 transition-all";
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-film text-rose-500 text-lg"></i>
+                            <h4 class="font-bold text-rose-100">${escapeHtml(movie.title)}</h4>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleMovieCategory(${movie.id})" title="Marcar como já assistido" class="text-rose-300 hover:text-white p-2 bg-rose-950/80 hover:bg-rose-900 rounded-lg border border-rose-800 transition-colors">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button onclick="deleteMovie(${movie.id})" title="Excluir filme" class="text-rose-400 hover:text-red-300 p-2 bg-red-950/60 hover:bg-red-900/80 rounded-lg border border-red-800/60 transition-colors">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `;
+                    toWatchContainer.appendChild(card);
+                });
             }
 
-            appData.movies.forEach(movie => {
-                let badgeColor = "bg-yellow-300 text-black border-black";
-                if (movie.category === "Já Assistimos") badgeColor = "bg-black text-yellow-400 border-yellow-400";
-
-                const card = document.createElement('div');
-                card.className = "bg-white/20 border-2 border-black p-4 rounded-xl flex items-center justify-between shadow-md";
-                card.innerHTML = `
-                    <div>
-                        <h4 class="font-bold text-black mb-1">${escapeHtml(movie.title)}</h4>
-                        <span class="text-xs font-bold px-2.5 py-1 rounded-full border ${badgeColor}">${escapeHtml(movie.category)}</span>
-                    </div>
-                    <button onclick="deleteMovie(${movie.id})" class="text-black hover:text-red-700 transition-colors p-2 bg-yellow-400 rounded-lg border-2 border-black">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                `;
-                container.appendChild(card);
-            });
+            // Render Watched List
+            if (watchedList.length === 0) {
+                watchedContainer.innerHTML = `<p class="text-rose-300/60 font-medium text-center col-span-2 py-6">Nenhum filme assistido ainda.</p>`;
+            } else {
+                watchedList.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.className = "bg-black/40 border border-rose-900/60 p-4 rounded-xl flex items-center justify-between shadow-md hover:border-rose-700/60 transition-all";
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-heart text-rose-500 text-lg"></i>
+                            <h4 class="font-bold text-rose-100 line-through opacity-80">${escapeHtml(movie.title)}</h4>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleMovieCategory(${movie.id})" title="Mover para assistir novamente" class="text-rose-300 hover:text-white p-2 bg-rose-950/80 hover:bg-rose-900 rounded-lg border border-rose-800 transition-colors">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button onclick="deleteMovie(${movie.id})" title="Excluir filme" class="text-rose-400 hover:text-red-300 p-2 bg-red-950/60 hover:bg-red-900/80 rounded-lg border border-red-800/60 transition-colors">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `;
+                    watchedContainer.appendChild(card);
+                });
+            }
         }
 
         // Add Movie Handler
@@ -301,34 +401,4 @@
 
         // Delete Movie
         function deleteMovie(id) {
-            appData.movies = appData.movies.filter(m => m.id !== id);
-            saveAndRefresh();
-        }
-
-        // Settings Handler
-        document.getElementById('settings-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            appData.names = document.getElementById('input-names').value.trim();
-            appData.startDate = document.getElementById('input-date').value;
-            document.getElementById('couple-names').innerText = appData.names;
-            saveAndRefresh();
-            switchTab('movies');
-        });
-
-        // Save to LocalStorage and update view
-        function saveAndRefresh() {
-            localStorage.setItem('coupleAppData', JSON.stringify(appData));
-            renderMovies();
-        }
-
-        // Helper to prevent XSS
-        function escapeHtml(text) {
-            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-        }
-
-        // Initial render
-        renderMovies();
-    </script>
-</body>
-</html>
+            appData.movies = appData.movies.filter(m => m.id !== id
