@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MJ's Films - Cinema Romântico</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Pro/Free for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        wine: {
+                            950: '#120205',
+                            900: '#23040a',
+                            800: '#3d0712',
+                            700: '#5c0a1b',
+                            600: '#850d26',
+                            500: '#b31234',
+                            400: '#d92649',
+                        },
+                        gold: {
+                            300: '#fbe29d',
+                            400: '#f8d06b',
+                            500: '#e5b338',
+                            600: '#be8c21',
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Smooth scrolling and base styling */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top, #2f050e 0%, #150206 50%, #0a0103 100%);
+            color: #fce8ec;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Cinema Canvas Background */
+        #ambient-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* Glassmorphism Luxury Cards */
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(61, 7, 18, 0.65) 0%, rgba(21, 2, 6, 0.85) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(248, 208, 107, 0.2);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-panel-gold {
+            background: linear-gradient(135deg, rgba(80, 10, 25, 0.8) 0%, rgba(35, 4, 10, 0.9) 100%);
+            border: 1px solid rgba(248, 208, 107, 0.4);
+            box-shadow: 0 0 25px rgba(229, 179, 56, 0.15);
+        }
+
+        /* Gold Gradient Text */
+        .gold-text {
+            background: linear-gradient(135deg, #fff2cb 0%, #f8d06b 50%, #c49126 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border {
+            border-image: linear-gradient(to right, #f8d06b, #850d26, #f8d06b) 1;
+        }
+
+        /* Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(217, 38, 73, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(248, 208, 107, 0.5); }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 3s infinite;
+        }
+
+        /* Floating Hearts Layer for Interactive Clicks */
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: floatUpAndFade 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes floatUpAndFade {
+            0% { opacity: 1; transform: translate(0, 0) scale(0.6) rotate(0deg); }
+            50% { opacity: 0.8; transform: translate(var(--dx), -80px) scale(1.2) rotate(var(--dr)); }
+            100% { opacity: 0; transform: translate(calc(var(--dx) * 1.5), -180px) scale(0.4) rotate(calc(var(--dr) * 2)); }
+        }
+
+        /* Cinema Curtain Overlay Animation */
+        .curtain-left, .curtain-right {
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .curtains-open .curtain-left { transform: translateX(-100%); }
+        .curtains-open .curtain-right { transform: translateX(100%); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #120205;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #5c0a1b;
+            border-radius: 4px;
+            border: 1px solid rgba(248, 208, 107, 0.3);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #850d26;
+        }
+    </style>
+</head>
+<body class="relative flex flex-col justify-between min-h-screen text-slate-100 selection:bg-wine-600 selection:text-gold-300">
+
+    <!-- Ambient Floating Particles Canvas -->
+    <canvas id="ambient-canvas"></canvas>
+
+    <!-- Cinema Curtains Opening Effect -->
+    <div id="curtain-container" class="fixed inset-0 z-50 pointer-events-none flex">
+        <div class="curtain-left w-1/2 h-full bg-gradient-to-r from-wine-950 via-wine-900 to-wine-800 border-r-2 border-gold-500/40 shadow-2xl relative flex items-center justify-end pr-8">
+            <div class="opacity-30 text-gold-400 text-6xl"><i class="fas fa-film"></i></div>
+        </div>
+        <div class="curtain-right w-1/2 h-full bg-gradient-to-l from-wine-950 via-wine-900 to-wine-800 border-l-2 border-gold-500/40 shadow-2xl relative flex items-center justify-start pl-8">
+            <div class="opacity-30 text-gold-400 text-6xl"><i class="fas fa-heart"></i></div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="relative z-10 pt-10 pb-6 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Cinema Badge & Romantic Heart -->
+            <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-gold-500/30 text-gold-400 mb-5 animate-float shadow-xl">
+                <i class="fas fa-ticket-simple text-rose-400"></i>
+                <span class="font-cinzel text-xs tracking-widest uppercase text-gold-300">Cine Privativo do Casal</span>
+                <i class="fas fa-heart text-wine-400 text-xs"></i>
+            </div>
+
+            <!-- Couple Name Header -->
+            <h1 class="font-cinzel text-4xl sm:text-6xl font-black tracking-wider mb-2 gold-text drop-shadow-md" id="display-couple-names">
+                João & Mari
+            </h1>
+            <p class="text-rose-200/70 text-sm sm:text-base font-light tracking-wide flex items-center justify-center gap-3">
+                <i class="fas fa-compact-disc text-gold-500/60 animate-spin" style="animation-duration: 8s;"></i>
+                <span>Nossa Historia em Cartaz</span>
+                <i class="fas fa-video text-gold-500/60"></i>
+            </p>
+
+            <!-- Relationship Time Counter Card -->
+            <div class="mt-8 glass-panel-gold rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto relative overflow-hidden">
+                <!-- Decorative Corner Accents -->
+                <div class="absolute top-2 left-3 text-gold-500/30 text-xs"><i class="fas fa-crown"></i></div>
+                <div class="absolute top-2 right-3 text-gold-500/30 text-xs"><i class="fas fa-crown"></i></div>
+                
+                <div class="flex items-center justify-center gap-2 mb-5">
+                    <i class="fas fa-feather-pointed text-gold-400 text-sm"></i>
+                    <h3 class="font-cinzel text-xs uppercase tracking-widest text-gold-300 font-bold">Tempo de Romance</h3>
+                    <i class="fas fa-feather-pointed text-gold-400 text-sm transform scale-x-[-1]"></i>
+                </div>
+
+                <!-- Timer Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
+                    <div class="bg-wine-950/80 p-3 sm:p-4 rounded-2xl border border-wine-700/50 shadow-inner">
+                        <span id="timer-days" class="font-cinzel text-2xl sm:text-4xl font-bold text-gold-300 block">00</span>
+                        <span class="text-[10px] sm:text-xs text-rose-200/60 font-medium uppercase tracking-wider">Dias</span>
+                    </div>
+                    <div class="bg-wine-950/80 p-3 sm:p-4 rounded-2xl border border-wine-700/50 shadow-inner">
+                        <span id="timer-hours" class="font-cinzel text-2xl sm:text-4xl font-bold text-gold-300 block">00</span>
+                        <span class="text-[10px] sm:text-xs text-rose-200/60 font-medium uppercase tracking-wider">Horas</span>
+                    </div>
+                    <div class="bg-wine-950/80 p-3 sm:p-4 rounded-2xl border border-wine-700/50 shadow-inner">
+                        <span id="timer-minutes" class="font-cinzel text-2xl sm:text-4xl font-bold text-gold-300 block">00</span>
+                        <span class="text-[10px] sm:text-xs text-rose-200/60 font-medium uppercase tracking-wider">Minutos</span>
+                    </div>
+                    <div class="bg-wine-950/80 p-3 sm:p-4 rounded-2xl border border-wine-700/50 shadow-inner">
+                        <span id="timer-seconds" class="font-cinzel text-2xl sm:text-4xl font-bold text-wine-400 block">00</span>
+                        <span class="text-[10px] sm:text-xs text-rose-200/60 font-medium uppercase tracking-wider">Segundos</span>
+                    </div>
+                </div>
+
+                <!-- Interactive Love Button & Audio Toggle -->
+                <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                    <button onclick="triggerLoveShower(event)" class="px-4 py-2 rounded-full bg-gradient-to-r from-wine-700 to-rose-700 hover:from-wine-600 hover:to-rose-600 text-gold-200 text-xs font-semibold tracking-wide border border-gold-500/30 shadow-lg transition-all transform active:scale-95 flex items-center gap-2">
+                        <i class="fas fa-heart-circle-bolt text-rose-300"></i>
+                        <span>Mandar Amor / Flecha do Cupido</span>
+                    </button>
+                    <button onclick="toggleAmbientSound()" id="sound-btn" class="px-4 py-2 rounded-full bg-wine-950/80 hover:bg-wine-900 text-gold-400 text-xs font-semibold border border-gold-500/20 transition-all flex items-center gap-2">
+                        <i class="fas fa-volume-xmark" id="sound-icon"></i>
+                        <span id="sound-text">Som de Cinema: Off</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTENT -->
+    <main class="relative z-10 max-w-4xl w-full mx-auto px-4 py-4 flex-grow">
+
+        <!-- Navigation Tabs Bar -->
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 p-1.5 rounded-2xl glass-panel max-w-2xl mx-auto border-gold-500/30">
+            <button onclick="switchTab('to-watch')" id="tab-to-watch" class="flex-1 min-w-[120px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-wine-700 to-wine-800 text-gold-300 border border-gold-500/40 shadow-lg">
+                <i class="fas fa-clapperboard"></i>
+                <span>Para Assistir</span>
+            </button>
+            <button onclick="switchTab('watched')" id="tab-watched" class="flex-1 min-w-[120px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 text-rose-200/70 hover:text-gold-300 hover:bg-wine-900/50">
+                <i class="fas fa-circle-check"></i>
+                <span>Já Assistidos</span>
+            </button>
+            <button onclick="openCupidModal()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 text-gold-400 hover:bg-gold-500/10 border border-gold-500/20">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                <span>Sortear</span>
+            </button>
+            <button onclick="switchTab('settings')" id="tab-settings" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 text-rose-200/70 hover:text-gold-300 hover:bg-wine-900/50">
+                <i class="fas fa-sliders"></i>
+                <span>Ajustes</span>
+            </button>
+        </div>
+
+        <!-- NOMINATION RANKING SUMMARY -->
+        <div id="ranking-bar" class="mb-6 glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 border-gold-500/20 text-xs sm:text-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gold-500/20 border border-gold-500/40 flex items-center justify-center text-gold-400">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div>
+                    <span class="text-rose-200/60 block text-[10px] uppercase font-bold tracking-wider">Top Indicador do Casal</span>
+                    <span id="top-indicator-text" class="font-bold text-gold-300">Carregando dados...</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-semibold">
+                <span id="stat-user1-count" class="px-3 py-1 rounded-full bg-wine-950 border border-wine-800 text-rose-200">
+                    User1: 0
+                </span>
+                <span id="stat-user2-count" class="px-3 py-1 rounded-full bg-wine-950 border border-wine-800 text-rose-200">
+                    User2: 0
+                </span>
+            </div>
+        </div>
+
+        <!-- FORM SECTION: ADD MOVIE (Visible on To-Watch & Watched) -->
+        <div id="section-add-form" class="mb-8">
+            <div class="glass-panel rounded-3xl p-5 sm:p-7 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-wine-800/80">
+                    <h2 class="font-cinzel text-lg sm:text-xl font-bold text-gold-300 flex items-center gap-2">
+                        <i class="fas fa-plus-circle text-wine-400"></i>
+                        <span>Adicionar à Lista de Cinema</span>
+                    </h2>
+                    <i class="fas fa-film text-wine-600/40 text-xl"></i>
+                </div>
+
+                <form id="movie-form" class="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4">
+                    <!-- Movie Title -->
+                    <div class="sm:col-span-5">
+                        <label class="block text-[11px] uppercase tracking-wider text-rose-300/80 font-semibold mb-1">Título do Filme ou Série</label>
+                        <div class="relative">
+                            <input type="text" id="movie-title" placeholder="Ex: Jogos Vorazes, Titanic..." required 
+                                class="w-full bg-wine-950/90 border border-wine-700/80 rounded-xl pl-10 pr-4 py-2.5 text-rose-100 placeholder-rose-300/30 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 text-sm">
+                            <i class="fas fa-ticket absolute left-3.5 top-3.5 text-rose-400/60 text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Who Nominated (User Selection) -->
+                    <div class="sm:col-span-4">
+                        <label class="block text-[11px] uppercase tracking-wider text-rose-300/80 font-semibold mb-1">Indicado por quem?</label>
+                        <div class="relative">
+                            <select id="movie-nominated-by" class="w-full bg-wine-950/90 border border-wine-700/80 rounded-xl pl-10 pr-4 py-2.5 text-rose-100 focus:outline-none focus:border-gold-400 text-sm appearance-none cursor-pointer">
+                                <!-- Populated dynamically -->
+                            </select>
+                            <i class="fas fa-user-heart absolute left-3.5 top-3.5 text-rose-400/60 text-xs"></i>
+                            <i class="fas fa-chevron-down absolute right-3.5 top-3.5 text-rose-400/60 text-xs pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <!-- Target Status -->
+                    <div class="sm:col-span-3">
+                        <label class="block text-[11px] uppercase tracking-wider text-rose-300/80 font-semibold mb-1">Status Inicial</label>
+                        <select id="movie-status" class="w-full bg-wine-950/90 border border-wine-700/80 rounded-xl px-3 py-2.5 text-rose-100 focus:outline-none focus:border-gold-400 text-sm appearance-none cursor-pointer">
+                            <option value="to-watch">Para Assistir</option>
+                            <option value="watched">Já Assistido</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="sm:col-span-12 mt-2">
+                        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-wine-700 via-rose-700 to-wine-700 hover:from-wine-600 hover:to-rose-600 text-gold-200 font-bold text-sm tracking-wide border border-gold-500/40 shadow-xl transition-all flex items-center justify-center gap-2 transform active:scale-[0.99]">
+                            <i class="fas fa-heart-circle-plus"></i>
+                            <span>Incluir na Sessão de Cinema</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 1: TO WATCH -->
+        <div id="content-to-watch" class="space-y-4">
+            <!-- Filter & Count Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 px-2">
+                <div class="flex items-center gap-2">
+                    <h3 class="font-cinzel text-base font-bold text-gold-300">Em Cartaz (Para Assistir)</h3>
+                    <span id="badge-count-to-watch" class="px-2.5 py-0.5 rounded-full bg-wine-900 border border-gold-500/30 text-gold-400 text-xs font-bold">0</span>
+                </div>
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="search-to-watch" oninput="renderMovies()" placeholder="Buscar título ou indicação..." 
+                        class="w-full bg-wine-950/80 border border-wine-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-rose-100 placeholder-rose-300/40 focus:outline-none focus:border-gold-500">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-rose-400/50 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Movies Grid Container -->
+            <div id="grid-to-watch" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Dynamic cards insertion -->
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 2: WATCHED -->
+        <div id="content-watched" class="hidden space-y-4">
+            <!-- Filter & Count Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 px-2">
+                <div class="flex items-center gap-2">
+                    <h3 class="font-cinzel text-base font-bold text-gold-300">Já Assistidos pelo Casal</h3>
+                    <span id="badge-count-watched" class="px-2.5 py-0.5 rounded-full bg-wine-900 border border-gold-500/30 text-gold-400 text-xs font-bold">0</span>
+                </div>
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="search-watched" oninput="renderMovies()" placeholder="Buscar nos vistos..." 
+                        class="w-full bg-wine-950/80 border border-wine-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-rose-100 placeholder-rose-300/40 focus:outline-none focus:border-gold-500">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-rose-400/50 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Watched Movies Grid Container -->
+            <div id="grid-watched" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Dynamic watched cards insertion -->
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 3: SETTINGS -->
+        <div id="content-settings" class="hidden space-y-6">
+            <div class="glass-panel rounded-3xl p-6 sm:p-8 max-w-2xl mx-auto border-gold-500/30">
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-wine-800">
+                    <div class="w-10 h-10 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400">
+                        <i class="fas fa-sliders text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-cinzel text-lg font-bold text-gold-300">Configurações de Romance</h2>
+                        <p class="text-xs text-rose-200/60">Ajuste os nomes do casal e a data marcante</p>
+                    </div>
+                </div>
+
+                <form id="settings-form" class="space-y-5">
+                    <!-- Partner 1 Name -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-gold-300 font-semibold mb-1">Nome Parceiro(a) 1</label>
+                            <input type="text" id="setting-user1" required
+                                class="w-full bg-wine-950/90 border border-wine-700 rounded-xl px-4 py-2.5 text-rose-100 focus:outline-none focus:border-gold-400 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-gold-300 font-semibold mb-1">Nome Parceiro(a) 2</label>
+                            <input type="text" id="setting-user2" required
+                                class="w-full bg-wine-950/90 border border-wine-700 rounded-xl px-4 py-2.5 text-rose-100 focus:outline-none focus:border-gold-400 text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Romantic Start Date & Time Selector -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-gold-300 font-semibold mb-1">Data e Hora do Início do Relacionamento</label>
+                        <input type="datetime-local" id="setting-start-date" required
+                            class="w-full bg-wine-950/90 border border-wine-700 rounded-xl px-4 py-2.5 text-rose-100 focus:outline-none focus:border-gold-400 text-sm">
+                        <p class="text-[11px] text-rose-300/50 mt-1">Este horário é utilizado para calcular o contador em tempo real no topo do site.</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 text-wine-950 font-bold text-sm tracking-wide border border-gold-300 shadow-xl transition-all hover:brightness-110 flex items-center justify-center gap-2">
+                        <i class="fas fa-floppy-disk"></i>
+                        <span>Salvar Configurações</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CUPID RANDOMIZER MODAL -->
+    <div id="cupid-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="glass-panel-gold rounded-3xl p-6 sm:p-8 max-w-md w-full text-center relative border-gold-500/50 shadow-2xl">
+            <!-- Close Modal Button -->
+            <button onclick="closeCupidModal()" class="absolute top-4 right-4 text-rose-300 hover:text-white w-8 h-8 rounded-full bg-wine-900/80 border border-wine-700 flex items-center justify-center transition-colors">
+                <i class="fas fa-xmark"></i>
+            </button>
+
+            <!-- Modal Header Icon -->
+            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-wine-700 to-rose-600 border border-gold-400 flex items-center justify-center mx-auto mb-4 text-gold-300 text-2xl shadow-lg pulse-glow">
+                <i class="fas fa-bow-arrow"></i>
+            </div>
+
+            <h3 class="font-cinzel text-2xl font-bold text-gold-300 mb-1">Roleta do Cupido</h3>
+            <p class="text-xs text-rose-200/70 mb-6">Sorteie um filme da lista "Para Assistir" para a sessão de hoje!</p>
+
+            <!-- Result Slot Box -->
+            <div id="cupid-result-box" class="bg-wine-950/90 border-2 border-dashed border-gold-500/40 rounded-2xl p-6 text-lg sm:text-xl font-bold text-rose-100 min-h-[110px] flex items-center justify-center my-4 shadow-inner">
+                <span class="text-xs text-rose-300/50 font-normal">Clique no botão para iniciar o sorteio romântico</span>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="spinCupidRoulette()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-wine-700 via-rose-700 to-wine-700 hover:from-wine-600 hover:to-rose-600 text-gold-200 font-bold text-sm tracking-wide border border-gold-400 shadow-xl transition-all flex items-center justify-center gap-2 transform active:scale-95">
+                <i class="fas fa-wand-magic-sparkles text-gold-400"></i>
+                <span>Girar Sorteador de Cinema</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- REVIEW / RATING MODAL FOR WATCHED MOVIES -->
+    <div id="review-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 max-w-md w-full relative border-gold-500/40 shadow-2xl">
+            <button onclick="closeReviewModal()" class="absolute top-4 right-4 text-rose-300 hover:text-white w-8 h-8 rounded-full bg-wine-900/80 border border-wine-700 flex items-center justify-center transition-colors">
+                <i class="fas fa-xmark"></i>
+            </button>
+
+            <h3 class="font-cinzel text-xl font-bold text-gold-300 mb-1 flex items-center gap-2">
+                <i class="fas fa-star text-amber-400"></i>
+                <span>Avaliação do Casal</span>
+            </h3>
+            <p id="review-movie-title" class="text-xs text-rose-200/70 mb-4 font-semibold">Título do Filme</p>
+
+            <form id="review-form" class="space-y-4">
+                <input type="hidden" id="review-movie-id">
+
+                <!-- Star Rating System -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-rose-300/80 font-semibold mb-2">Nota do Filme</label>
+                    <div class="flex items-center gap-2 text-2xl text-wine-800" id="star-rating-container">
+                        <i class="fas fa-star cursor-pointer hover:text-amber-400 transition-colors" data-rating="1" onclick="setRating(1)"></i>
+                        <i class="fas fa-star cursor-pointer hover:text-amber-400 transition-colors" data-rating="2" onclick="setRating(2)"></i>
+                        <i class="fas fa-star cursor-pointer hover:text-amber-400 transition-colors" data-rating="3" onclick="setRating(3)"></i>
+                        <i class="fas fa-star cursor-pointer hover:text-amber-400 transition-colors" data-rating="4" onclick="setRating(4)"></i>
+                        <i class="fas fa-star cursor-pointer hover:text-amber-400 transition-colors" data-rating="5" onclick="setRating(5)"></i>
+                    </div>
+                </div>
+
+                <!-- Review Note -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-rose-300/80 font-semibold mb-1">Mini Resenha ou Comentário</label>
+                    <textarea id="review-notes" rows="3" placeholder="O que acharam do filme juntos? O pipoca estava boa?..."
+                        class="w-full bg-wine-950/90 border border-wine-700 rounded-xl p-3 text-rose-100 placeholder-rose-300/30 text-xs focus:outline-none focus:border-gold-400"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-gold-600 to-gold-500 text-wine-950 font-bold text-xs tracking-wide shadow-lg hover:brightness-110 transition-all">
+                    Salvar Avaliação
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 py-8 text-center text-xs text-rose-300/50 border-t border-wine-900/60 mt-12 bg-wine-950/60 backdrop-blur-md">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 font-cinzel text-gold-400">
+                <i class="fas fa-film"></i>
+                <span>MJ's Films</span>
+            </div>
+            <p class="flex items-center gap-1.5">
+                <span>Feito exclusivamente para o cinema de</span>
+                <span id="footer-names" class="text-rose-200 font-semibold">João & Mari</span>
+                <i class="fas fa-heart text-wine-500"></i>
+            </p>
+            <div class="flex items-center gap-3 text-rose-400/60">
+                <i class="fas fa-ticket-simple"></i>
+                <i class="fas fa-sparkles"></i>
+                <i class="fas fa-clapperboard"></i>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC & SCRIPTS -->
+    <script>
+        /* APP INITIAL STATE & STORAGE MANAGEMENT */
+        const STORAGE_KEY = 'mjs_films_app_data_v2';
+
+        let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+            user1: "João",
+            user2: "Mari",
+            startDate: "2024-06-12T20:00",
+            movies: [
+                {
+                    id: 1,
+                    title: "Jogos Vorazes",
+                    nominatedBy: "Mari",
+                    status: "to-watch",
+                    rating: 0,
+                    notes: "",
+                    createdAt: Date.now() - 86400000
+                },
+                {
+                    id: 2,
+                    title: "Titanic",
+                    nominatedBy: "João",
+                    status: "watched",
+                    rating: 5,
+                    notes: "Choramos muito no final! Clássico absoluto.",
+                    createdAt: Date.now() - 172800000
+                }
+            ]
+        };
+
+        let currentSelectedRating = 0;
+        let audioContext = null;
+        let ambientOscillator = null;
+        let isAudioPlaying = false;
+
+        /* SAVE STATE TO LOCAL STORAGE */
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            renderAll();
+        }
+
+        /* INITIALIZATION ON WINDOW LOAD */
+        window.onload = function() {
+            // Open curtains animation effect
+            setTimeout(() => {
+                document.body.classList.add('curtains-open');
+            }, 300);
+
+            initAmbientCanvas();
+            initSettingsUI();
+            renderAll();
+
+            // Start romantic timer loop
+            setInterval(updateRomanticCounter, 1000);
+            updateRomanticCounter();
+        };
+
+        /* RENDER ALL DYNAMIC PARTS */
+        function renderAll() {
+            updateCoupleNamesDisplay();
+            populateNominatedByDropdown();
+            renderMovies();
+            updateRankingStats();
+        }
+
+        /* UPDATE NAMES DISPLAY */
+        function updateCoupleNamesDisplay() {
+            const namesText = `${appState.user1} & ${appState.user2}`;
+            document.getElementById('display-couple-names').innerText = namesText;
+            document.getElementById('footer-names').innerText = namesText;
+        }
+
+        /* POPULATE DROPDOWN FOR USER NOMINATION */
+        function populateNominatedByDropdown() {
+            const dropdown = document.getElementById('movie-nominated-by');
+            dropdown.innerHTML = `
+                <option value="${escapeHtml(appState.user1)}">${escapeHtml(appState.user1)}</option>
+                <option value="${escapeHtml(appState.user2)}">${escapeHtml(appState.user2)}</option>
+            `;
+        }
+
+        /* TIMER LOGIC FOR COUPLE TIME */
+        function updateRomanticCounter() {
+            const start = new Date(appState.startDate).getTime();
+            const now = new Date().getTime();
+            const diff = now - start;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('timer-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('timer-hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('timer-minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('timer-seconds').innerText = String(seconds).padStart(2, '0');
+            } else {
+                document.getElementById('timer-days').innerText = "00";
+                document.getElementById('timer-hours').innerText = "00";
+                document.getElementById('timer-minutes').innerText = "00";
+                document.getElementById('timer-seconds').innerText = "00";
+            }
+        }
+
+        /* TAB SWITCHING SYSTEM */
+        function switchTab(tabName) {
+            const tabToWatch = document.getElementById('tab-to-watch');
+            const tabWatched = document.getElementById('tab-watched');
+            const tabSettings = document.getElementById('tab-settings');
+
+            const contentToWatch = document.getElementById('content-to-watch');
+            const contentWatched = document.getElementById('content-watched');
+            const contentSettings = document.getElementById('content-settings');
+            const sectionAddForm = document.getElementById('section-add-form');
+
+            const activeClass = "flex-1 min-w-[120px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-wine-700 to-wine-800 text-gold-300 border border-gold-500/40 shadow-lg";
+            const inactiveClass = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 text-rose-200/70 hover:text-gold-300 hover:bg-wine-900/50";
+
+            tabToWatch.className = inactiveClass;
+            tabWatched.className = inactiveClass;
+            tabSettings.className = inactiveClass;
+
+            contentToWatch.classList.add('hidden');
+            contentWatched.classList.add('hidden');
+            contentSettings.classList.add('hidden');
+
+            if (tabName === 'to-watch') {
+                tabToWatch.className = activeClass;
+                contentToWatch.classList.remove('hidden');
+                sectionAddForm.classList.remove('hidden');
+            } else if (tabName === 'watched') {
+                tabWatched.className = activeClass;
+                contentWatched.classList.remove('hidden');
+                sectionAddForm.classList.remove('hidden');
+            } else if (tabName === 'settings') {
+                tabSettings.className = activeClass;
+                contentSettings.classList.remove('hidden');
+                sectionAddForm.classList.add('hidden');
+            }
+        }
+
+        /* RENDER MOVIES IN BOTH TABS */
+        function renderMovies() {
+            const gridToWatch = document.getElementById('grid-to-watch');
+            const gridWatched = document.getElementById('grid-watched');
+            const searchToWatch = document.getElementById('search-to-watch').value.toLowerCase();
+            const searchWatched = document.getElementById('search-watched').value.toLowerCase();
+
+            gridToWatch.innerHTML = '';
+            gridWatched.innerHTML = '';
+
+            const toWatchMovies = appState.movies.filter(m => m.status === 'to-watch' && (
+                m.title.toLowerCase().includes(searchToWatch) || m.nominatedBy.toLowerCase().includes(searchToWatch)
+            ));
+
+            const watchedMovies = appState.movies.filter(m => m.status === 'watched' && (
+                m.title.toLowerCase().includes(searchWatched) || m.nominatedBy.toLowerCase().includes(searchWatched)
+            ));
+
+            document.getElementById('badge-count-to-watch').innerText = toWatchMovies.length;
+            document.getElementById('badge-count-watched').innerText = watchedMovies.length;
+
+            // Render To-Watch Cards
+            if (toWatchMovies.length === 0) {
+                gridToWatch.innerHTML = `
+                    <div class="col-span-full py-8 text-center glass-panel rounded-2xl">
+                        <i class="fas fa-film text-3xl text-rose-400/30 mb-2"></i>
+                        <p class="text-xs text-rose-200/60">Nenhum filme pendente na lista.</p>
+                    </div>
+                `;
+            } else {
+                toWatchMovies.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.className = "glass-panel rounded-2xl p-4 flex flex-col justify-between border-gold-500/20 hover:border-gold-500/40 transition-all";
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <h4 class="font-bold text-rose-100 text-sm sm:text-base flex items-center gap-2">
+                                    <i class="fas fa-ticket text-rose-400 text-xs"></i>
+                                    <span>${escapeHtml(movie.title)}</span>
+                                </h4>
+                                <button onclick="deleteMovie(${movie.id})" title="Excluir" class="text-rose-400/50 hover:text-rose-300 text-xs p-1">
+                                    <i class="fas fa-trash-can"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Nomination Tag -->
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-wine-950/80 border border-wine-700/60 text-[11px] font-medium text-gold-300 mb-4">
+                                <i class="fas fa-user-heart text-rose-400 text-[10px]"></i>
+                                <span>Indicação por ${escapeHtml(movie.nominatedBy)}</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-wine-900/80 flex items-center justify-between">
+                            <span class="text-[10px] text-rose-300/40">Pendente para assistir</span>
+                            <button onclick="moveToWatched(${movie.id}, event)" class="px-3 py-1.5 rounded-lg bg-wine-900 hover:bg-rose-900 text-gold-300 text-xs font-semibold border border-gold-500/30 flex items-center gap-1.5 transition-all">
+                                <i class="fas fa-check text-rose-400"></i>
+                                <span>Marcar como Visto</span>
+                            </button>
+                        </div>
+                    `;
+                    gridToWatch.appendChild(card);
+                });
+            }
+
+            // Render Watched Cards
+            if (watchedMovies.length === 0) {
+                gridWatched.innerHTML = `
+                    <div class="col-span-full py-8 text-center glass-panel rounded-2xl">
+                        <i class="fas fa-heart-crack text-3xl text-rose-400/30 mb-2"></i>
+                        <p class="text-xs text-rose-200/60">Nenhum filme assistido ainda.</p>
+                    </div>
+                `;
+            } else {
+                watchedMovies.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.className = "glass-panel-gold rounded-2xl p-4 flex flex-col justify-between border-gold-500/30";
+                    
+                    let starsHTML = '';
+                    for (let i = 1; i <= 5; i++) {
+                        if (i <= movie.rating) {
+                            starsHTML += '<i class="fas fa-star text-amber-400 text-xs"></i>';
+                        } else {
+                            starsHTML += '<i class="far fa-star text-rose-950 text-xs"></i>';
+                        }
+                    }
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <h4 class="font-bold text-rose-100 text-sm sm:text-base flex items-center gap-2">
+                                    <i class="fas fa-circle-check text-rose-400 text-xs"></i>
+                                    <span>${escapeHtml(movie.title)}</span>
+                                </h4>
+                                <button onclick="deleteMovie(${movie.id})" title="Excluir" class="text-rose-400/50 hover:text-rose-300 text-xs p-1">
+                                    <i class="fas fa-trash-can"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-2 mb-3">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-wine-950 border border-wine-800 text-[10px] text-gold-300">
+                                    <i class="fas fa-user-heart text-rose-400"></i>
+                                    <span>Indicação por ${escapeHtml(movie.nominatedBy)}</span>
+                                </span>
+                                <div class="flex items-center gap-1 bg-wine-950 px-2 py-0.5 rounded-full border border-wine-800">
+                                    ${starsHTML}
+                                </div>
+                            </div>
+
+                            ${movie.notes ? `
+                                <p class="text-xs text-rose-200/80 bg-wine-950/60 p-2.5 rounded-xl border border-wine-900 italic mb-3">
+                                    "${escapeHtml(movie.notes)}"
+                                </p>
+                            ` : ''}
+                        </div>
+
+                        <div class="pt-2 border-t border-wine-900/80 flex items-center justify-between">
+                            <button onclick="openReviewModal(${movie.id})" class="text-xs text-gold-400 hover:text-gold-300 flex items-center gap-1">
+                                <i class="fas fa-pen-to-square"></i>
+                                <span>${movie.rating ? 'Editar Avaliação' : 'Avaliar Filme'}</span>
+                            </button>
+                            <button onclick="moveToToWatch(${movie.id})" class="text-[11px] text-rose-300/60 hover:text-rose-200">
+                                Re-assistir
+                            </button>
+                        </div>
+                    `;
+                    gridWatched.appendChild(card);
+                });
+            }
+        }
+
+        /* ADD MOVIE FORM HANDLER */
+        document.getElementById('movie-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const titleInput = document.getElementById('movie-title');
+            const nominatedInput = document.getElementById('movie-nominated-by');
+            const statusInput = document.getElementById('movie-status');
+
+            const newMovie = {
+                id: Date.now(),
+                title: titleInput.value.trim(),
+                nominatedBy: nominatedInput.value,
+                status: statusInput.value,
+                rating: 0,
+                notes: "",
+                createdAt: Date.now()
+            };
+
+            appState.movies.push(newMovie);
+            saveState();
+
+            titleInput.value = '';
+            triggerHeartExplosion(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+        });
+
+        /* MOVE TO WATCHED WITH HEART EXPLOSION */
+        function moveToWatched(id, event) {
+            const movie = appState.movies.find(m => m.id === id);
+            if (movie) {
+                movie.status = 'watched';
+                saveState();
+                if (event) {
+                    triggerHeartExplosion(event.clientX, event.clientY);
+                }
+            }
+        }
+
+        function moveToToWatch(id) {
+            const movie = appState.movies.find(m => m.id === id);
+            if (movie) {
+                movie.status = 'to-watch';
+                saveState();
+            }
+        }
+
+        function deleteMovie(id) {
+            appState.movies = appState.movies.filter(m => m.id !== id);
+            saveState();
+        }
+
+        /* UPDATE NOMINATION RANKING STATS */
+        function updateRankingStats() {
+            const count1 = appState.movies.filter(m => m.nominatedBy === appState.user1).length;
+            const count2 = appState.movies.filter(m => m.nominatedBy === appState.user2).length;
+
+            document.getElementById('stat-user1-count').innerText = `${appState.user1}: ${count1}`;
+            document.getElementById('stat-user2-count').innerText = `${appState.user2}: ${count2}`;
+
+            const rankingText = document.getElementById('top-indicator-text');
+            if (count1 > count2) {
+                rankingText.innerText = `${appState.user1} lidera com ${count1} indicações!`;
+            } else if (count2 > count1) {
+                rankingText.innerText = `${appState.user2} lidera com ${count2} indicações!`;
+            } else {
+                rankingText.innerText = `Empate perfeito! Ambos com ${count1} indicações.`;
+            }
+        }
+
+        /* REVIEW MODAL LOGIC */
+        function openReviewModal(movieId) {
+            const movie = appState.movies.find(m => m.id === movieId);
+            if (!movie) return;
+
+            document.getElementById('review-movie-id').value = movie.id;
+            document.getElementById('review-movie-title').innerText = movie.title;
+            document.getElementById('review-notes').value = movie.notes || '';
+            setRating(movie.rating || 0);
+
+            document.getElementById('review-modal').classList.remove('hidden');
+            document.getElementById('review-modal').classList.add('flex');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('review-modal').classList.add('hidden');
+            document.getElementById('review-modal').classList.remove('flex');
+        }
+
+        function setRating(rating) {
+            currentSelectedRating = rating;
+            const stars = document.querySelectorAll('#star-rating-container i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.className = "fas fa-star cursor-pointer text-amber-400 transition-colors";
+                } else {
+                    star.className = "fas fa-star cursor-pointer text-wine-900 transition-colors";
+                }
+            });
+        }
+
+        document.getElementById('review-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const movieId = parseInt(document.getElementById('review-movie-id').value);
+            const notes = document.getElementById('review-notes').value.trim();
+
+            const movie = appState.movies.find(m => m.id === movieId);
+            if (movie) {
+                movie.rating = currentSelectedRating;
+                movie.notes = notes;
+                saveState();
+            }
+
+            closeReviewModal();
+        });
+
+        /* SETTINGS FORM LOGIC */
+        function initSettingsUI() {
+            document.getElementById('setting-user1').value = appState.user1;
+            document.getElementById('setting-user2').value = appState.user2;
+            document.getElementById('setting-start-date').value = appState.startDate;
+        }
+
+        document.getElementById('settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            appState.user1 = document.getElementById('setting-user1').value.trim();
+            appState.user2 = document.getElementById('setting-user2').value.trim();
+            appState.startDate = document.getElementById('setting-start-date').value;
+
+            saveState();
+            switchTab('to-watch');
+        });
+
+        /* CUPID ROULETTE MODAL LOGIC */
+        function openCupidModal() {
+            document.getElementById('cupid-modal').classList.remove('hidden');
+            document.getElementById('cupid-modal').classList.add('flex');
+            document.getElementById('cupid-result-box').innerHTML = `
+                <span class="text-xs text-rose-300/50 font-normal">Clique no botão para iniciar o sorteio romântico</span>
+            `;
+        }
+
+        function closeCupidModal() {
+            document.getElementById('cupid-modal').classList.add('hidden');
+            document.getElementById('cupid-modal').classList.remove('flex');
+        }
+
+        function spinCupidRoulette() {
+            const watchList = appState.movies.filter(m => m.status === 'to-watch');
+            const resultBox = document.getElementById('cupid-result-box');
+
+            if (watchList.length === 0) {
+                resultBox.innerHTML = `<span class="text-xs text-rose-300">Nenhum filme na aba 'Para Assistir'!</span>`;
+                return;
+            }
+
+            let counter = 0;
+            const interval = setInterval(() => {
+                const randomMovie = watchList[Math.floor(Math.random() * watchList.length)];
+                resultBox.innerHTML = `
+                    <div class="text-center">
+                        <span class="text-sm font-bold text-rose-200 block">${escapeHtml(randomMovie.title)}</span>
+                        <span class="text-[10px] text-gold-400">Indicação: ${escapeHtml(randomMovie.nominatedBy)}</span>
+                    </div>
+                `;
+                counter++;
+                if (counter > 15) {
+                    clearInterval(interval);
+                    const finalChoice = watchList[Math.floor(Math.random() * watchList.length)];
+                    resultBox.innerHTML = `
+                        <div class="text-center">
+                            <i class="fas fa-crown text-gold-400 text-sm mb-1 block"></i>
+                            <span class="text-lg sm:text-xl font-black text-gold-300 block">${escapeHtml(finalChoice.title)}</span>
+                            <span class="text-xs text-rose-300 font-semibold">Indicação por ${escapeHtml(finalChoice.nominatedBy)}</span>
+                        </div>
+                    `;
+                    triggerHeartExplosion(window.innerWidth / 2, window.innerHeight / 2);
+                }
+            }, 80);
+        }
+
+        /* INTERACTIVE HEART EXPLOSION / SHOWER */
+        function triggerLoveShower(e) {
+            const x = e.clientX || window.innerWidth / 2;
+            const y = e.clientY || window.innerHeight / 2;
+            triggerHeartExplosion(x, y);
+        }
+
+        function triggerHeartExplosion(startX, startY) {
+            const icons = ['fa-heart', 'fa-bow-arrow', 'fa-sparkles', 'fa-star', 'fa-ticket'];
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'heart-particle text-rose-400 text-lg';
+                
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                particle.innerHTML = `<i class="fas ${randomIcon}"></i>`;
+
+                const dx = (Math.random() - 0.5) * 200;
+                const dr = (Math.random() - 0.5) * 360;
+
+                particle.style.left = `${startX}px`;
+                particle.style.top = `${startY}px`;
+                particle.style.setProperty('--dx', `${dx}px`);
+                particle.style.setProperty('--dr', `${dr}deg`);
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 2500);
+            }
+        }
+
+        /* WEB AUDIO SYNTHESIZER FOR CINEMA AMBIENT SOUND */
+        function toggleAmbientSound() {
+            const btnText = document.getElementById('sound-text');
+            const btnIcon = document.getElementById('sound-icon');
+
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (isAudioPlaying) {
+                if (ambientOscillator) ambientOscillator.stop();
+                isAudioPlaying = false;
+                btnText.innerText = "Som de Cinema: Off";
+                btnIcon.className = "fas fa-volume-xmark";
+            } else {
+                audioContext.resume();
+                ambientOscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                ambientOscillator.type = 'sine';
+                ambientOscillator.frequency.setValueAtTime(110, audioContext.currentTime); // Low romantic chord hum
+                gainNode.gain.setValueAtTime(0.015, audioContext.currentTime);
+
+                ambientOscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                ambientOscillator.start();
+                isAudioPlaying = true;
+                btnText.innerText = "Som de Cinema: On";
+                btnIcon.className = "fas fa-volume-high text-gold-400";
+            }
+        }
+
+        /* AMBIENT CANVAS PARTICLES (VAGA-LUMES & POEIRA ESTELAR) */
+        function initAmbientCanvas() {
+            const canvas = document.getElementById('ambient-canvas');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            const particles = Array.from({ length: 45 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 0.5,
+                alpha: Math.random(),
+                speedY: Math.random() * 0.3 + 0.1,
+                speedX: (Math.random() - 0.5) * 0.2
+            }));
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(p => {
+                    p.y -= p.speedY;
+                    p.x += p.speedX;
+
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(248, 208, 107, ${p.alpha * 0.4})`;
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        /* ESCAPE HTML HELPER */
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+    </script>
+</body>
+</html>
